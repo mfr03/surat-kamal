@@ -41,6 +41,7 @@ class JenisResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                    
             ])
             ->filters([
                 //

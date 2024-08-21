@@ -21,6 +21,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components;
 
 
 class SuratResource extends Resource
@@ -28,6 +29,16 @@ class SuratResource extends Resource
     protected static ?string $model = Surat::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-airplane';
+    
+    public static function getPluralLabel(): string
+    {
+        return 'Surat';  
+    }
+
+    public static function getLabel(): string
+    {
+        return 'Surat'; 
+    }
 
     public static function form(Form $form): Form
     {
@@ -37,45 +48,95 @@ class SuratResource extends Resource
                 Select::make('jenis_id')
                     ->relationship('jenis', 'name')
                     ->label('Jenis Surat')
+                    ->placeholder('Pilih opsi')
                     ->required()
                     ->columnSpanFull()
                     ->live(),
                     
-                    Select::make('kode_surat')
-                        // ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                        ->label('Kode Surat')
-                        ->columnSpan(1)
-                        ->options([
-                            '430' => '430 - Umum',
-                            '300' => '300 - Bank'
-                            ])
-                        ->required(),
+                Select::make('kode_surat')
+                    ->label('Kode Surat')
+                    ->placeholder('Pilih opsi')
+                    ->columnSpan(1)
+                    ->options([
+                        '430' => '430 - Umum',
+                        '300' => '300 - Bank',
+                        '330' => '330 - Izin Acara',
+                        '900' => '900 - Perbankan',
+                    ])
+                    ->required()
+                    ->reactive(), // This ensures changes to this field trigger reactive updates
+
+                TextInput::make('nomor_surat')
+                    ->label('Nomor')
+                    ->maxLength(255)
+                    ->columnSpan(1)
+                    ->required()
+                    ->reactive(), // This ensures changes to this field trigger reactive updates
 
                 TextInput::make('letter_number')
-                    ->required()
                     ->label('Nomor Surat')
-                    ->maxLength(255)
-                    ->columnSpan(1),
+                    ->columnSpanFull()
+                    ->reactive()  // Make it reactive to changes
+                    ->afterStateUpdated(function ($state, callable $set, Get $get) {
+                        $kode_surat = $get('kode_surat');
+                        $letter_number = $get('nomor_surat');
+                        
+                        // Convert month to Roman numerals
+                        $month = now()->month;
+                        $roman_month = match ($month) {
+                            1 => 'I',
+                            2 => 'II',
+                            3 => 'III',
+                            4 => 'IV',
+                            5 => 'V',
+                            6 => 'VI',
+                            7 => 'VII',
+                            8 => 'VIII',
+                            9 => 'IX',
+                            10 => 'X',
+                            11 => 'XI',
+                            12 => 'XII',
+                            default => ''
+                        };
+
+                        $year = now()->year;
+
+                        // Ensure fields are set before combining
+                        if ($kode_surat && $letter_number) {
+                            // Combine the values
+                            $combined_nomor_surat = $kode_surat . '/' . $letter_number . '/' . $roman_month . '/' . $year;
+
+                            // Set the combined value
+                            $set('letter_number', $combined_nomor_surat);
+                        }
+                    })
+
+                    ->required(),  // Ensure this field is required
+
+              
+
+                // Select::make('nama_perangkat')
+                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                //     ->label('Nama perangkat')
+                //     ->placeholder('Pilih opsi')
+                //     ->columnSpanFull()
+                //     ->options([
+                //         'kepala_desa' => 'Kepala Desa',
+                //         'sekdes' => 'Sekretaris Desa',
+                //         'kaur_tu' => 'KAUR TU',
+                //     ])
+                //     ->required()
+                //     ->reactive(), // This ensures changes to this field trigger reactive updates
+
 
                 TextInput::make('name')
                     ->required()
                     ->label('Nama')
                     ->maxLength(255)
                     ->columnSpanFull(),
+
+                
                     
-                TextInput::make('nama_ibu_kandung')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->columnSpanFull(),
-
-                TextInput::make('nomor_hp')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->columnSpanFull(),
-
-                TextInput::make('keterangan_usaha')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->columnSpanFull(),
-
-
                 TextInput::make('place_of_birth')
                 ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
@@ -89,7 +150,7 @@ class SuratResource extends Resource
                     ->label('Tanggal lahir')
                     ->maxDate(now())
                     ->columnSpanFull(),
-                    
+
                 Select::make('nationality')
                     ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->label('Kewarganearaan')
@@ -100,21 +161,71 @@ class SuratResource extends Resource
                     ->required()
                     ->columnSpanFull(),
 
-                Select::make('religion')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                ->label('Agama')
-                ->options([
-                    'islam' => 'Islam',
-                    'christianity' => 'Kristen',
-                    'hinduism' => 'Hindu',
-                    'buddhism' => 'Budha',
-                    'konghucu' => 'Konghucu',
-                    ])
+                TextInput::make('id_number')
                     ->required()
+                    ->label('NIK')
+                    ->maxLength(255)
                     ->columnSpanFull(),
 
-                    
+                Select::make('jenis_kelamin')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->label('Jenis kelamin')
+                    ->placeholder('Pilih opsi')
+                    ->columnSpanFull()
+                    ->options([
+                        'Laki-laki' => 'Laki-laki',
+                        'Perempuan' => 'Perempuan',
+                        
+                        ])
+                    ->required(),
 
+                Select::make('religion')
+                    ->placeholder('Pilih opsi')
+                    ->label('Agama')
+                    ->options([
+                        'islam' => 'Islam',
+                        'kristen' => 'Kristen',
+                        'hindu' => 'Hindu',
+                        'budha' => 'Budha',
+                        'konghucu' => 'Konghucu',
+                        ])
+                        ->required()
+                        ->columnSpanFull(),
+
+                    
+                TextInput::make('nama_ibu_kandung')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->columnSpanFull(),
+
+                TextInput::make('nomor_hp')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->columnSpanFull(),
+
+                TextInput::make('domisili')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->default('Adalah benar penduduk yang berdomisili di ............')
+                    ->columnSpanFull(),
+
+                TextInput::make('selama')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->default('Berdasarkan sepengetahuan kami bahwa nama tersebut diatas adalah benar mempunya usaha bertani selama ... Tahun')
+                    ->columnSpanFull(),
+
+                // TextInput::make('tujuan_susrat')
+                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                //     ->columnSpanFull(),
+
+                Textarea::make('tujuan_surat')
+                    ->label('Tujuan Surat')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
+                    ->reactive()
+                    ->maxLength(65535)
+                    ->columnSpanFull()
+                    ->default('Adapun surat keterangan usaha ini dibuat untuk'),
+                    
+                
+
+                
                 TextInput::make('job')
                 ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
@@ -129,12 +240,7 @@ class SuratResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull(),
 
-                TextInput::make('id_number')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1' || '2')
-                    ->required()
-                    ->label('NIK')
-                    ->maxLength(255)
-                    ->columnSpanFull(),
+                
 
                 TextInput::make('kartu_keluarga')
                     ->visible(fn (Get $get): bool => $get('jenis_id') === '1' )
@@ -159,20 +265,63 @@ class SuratResource extends Resource
                     ->columnSpanFull(),
 
                 DatePicker::make('valid_from')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                    ->label('Berlaku mulai')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
                     ->maxDate(now())
                     ->columnSpanFull(),
 
-                DatePicker::make('valid_until')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                    ->required()
-                    ->columnSpanFull(),
+                // DatePicker::make('valid_until')
+                // ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                //     ->required()
+                //     ->columnSpanFull(),
                     
+                // Textarea::make('remarks')
+                //     ->label('Keterangan lain-lain')
+                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                //     ->maxLength(65535)
+                //     ->columnSpanFull(),
+
+                Select::make('template_remarks')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                    ->label('Pilih Keterangan')
+                    ->placeholder('Pilih opsi')
+                    ->options([
+                        'ORANG TERSEBUT BENAR-BENAR WARGA DESA KAMAL DAN BERADAT-ISTIADAT YANG BAIK' => 'ORANG TERSEBUT BENAR-BENAR WARGA DESA KAMAL DAN BERADAT-ISTIADAT YANG BAIK',
+                        'ORANG TERSEBUT BENAR-BENAR WARGA DESA KAMAL' => 'ORANG TERSEBUT BENAR-BENAR WARGA DESA KAMAL',
+                        'custom' => 'Custom',
+                    ])
+                    ->reactive()  
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        
+                        if ($state !== 'custom') {
+                            $set('remarks', $state);
+                        } else {
+                            $set('remarks', $state);
+                        }
+                    })
+                    ->required(),  // Ensure that something is always selected
+
                 Textarea::make('remarks')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                    ->label('Keterangan lain-lain')
+                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
+                    ->visible(fn (Get $get) => $get('remarks') )  
+                    ->reactive()
                     ->maxLength(65535)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->placeholder('Masukkan keterangan secara manual jika memilih Custom.'),
+
+
+                Select::make('jabatan')
+                    ->label('Pilih Jabatan TTD')
+                    ->columnSpanFull()
+                    ->options([
+                        'kepala_desa' => 'Kepala Desa Kamal',
+                        'sekdes' => 'Sekretaris Desa',
+                        'kaur_tu' => 'Kaur TU',
+                    ])
+                    ->required(),
+
                 
             ]);
 
@@ -183,9 +332,6 @@ class SuratResource extends Resource
             return $table
                 ->columns([
                     
-                    TextColumn::make('id')
-                        ->sortable()
-                        ->label('No'),
                     TextColumn::make('letter_number')
                         ->sortable()
                         ->label('Nomor surat')
@@ -203,6 +349,7 @@ class SuratResource extends Resource
                         ->label('Jenis Surat')
                         ->searchable(),
                 ])
+                ->defaultSort('created_at', 'desc')
                 ->filters([
                     Tables\Filters\SelectFilter::make('jenis_id')
                         ->relationship('jenis', 'name'),
@@ -223,7 +370,7 @@ class SuratResource extends Resource
                     ->url(fn (Surat $record) => route('download.letter', ['id' => $record->id]))
                     ->icon('heroicon-o-arrow-down-tray'),
                     
-                    
+                   
                     Tables\Actions\EditAction::make(),
                     
                     Tables\Actions\DeleteAction::make(),

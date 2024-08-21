@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Keterangan</title>
-    
+
     <style type="text/css">
         body {
             font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
             background-color: #ffffff;
         }
+
         /* .rangkasurat {
             width: 980px;
             margin: 0 auto;
@@ -19,37 +22,46 @@
             padding: 20px;
         } */
         .headerAtas {
-            
+
             border-bottom: 5px solid #000;
             padding: 2px;
             width: 100%;
         }
+
         .tengah {
             text-align: center;
             line-height: 5px;
             padding-right: 100px;
         }
-        .row{
+
+        .row {
             margin-top: 20px
         }
-        .lampiran{
+
+        .lampiran {
             margin-top: 20px;
         }
-        .atasbawah{
+
+        .atasbawah {
             margin: 0px;
+        }
+
+        td {
+            vertical-align: top;
         }
     </style>
 </head>
-<body onload="window.print()">
+
+<body onload="">
     <div class="rangkasurat">
         <table class="headerAtas">
             <tr>
-                <td><img src="./sukoharjo.jpg" width="90px"></td>
+                <td><img src="./sukoharjo.jpg" width="80px"></td>
                 <td class="tengah">
                     <h2>PEMERINTAH KABUPATEN SUKOHARJO</h2>
                     <h2>KECAMATAN BULU</h2>
                     <h2>DESA KAMAL</h2>
-                    <p >Alamat: Jl. Raya Bulu - Sanggang Km 2.5 No. Telp, Kode Pos 57563</p>
+                    <p>Alamat: Jl. Raya Bulu - Sanggang Km 2.5 No. Telp, Kode Pos 57563</p>
                     <p></p>
                 </td>
             </tr>
@@ -57,19 +69,20 @@
         <div id="lampiran" class="lampiran">
             No Kode Desa/Kelurahan<br />
             33 11 022002
-          </div>
-          <br>
+        </div>
+        <br>
     </div>
 
     <div class="tengah">
         <p>SURAT KETERANGAN PENGANTAR</p>
         <br>
         <p>Nomor: {{ $nomor }}</p>
-    
+
     </div>
     <div class="content">
-        
-        <p>Yang bertanda tangan dibawah ini kami Kepala Desa Kamal Kecamatan Bulu Kabupaten Sukoharjo, Menerangkan bahwa:</p>
+
+        <p>Yang bertanda tangan dibawah ini kami Kepala Desa Kamal Kecamatan Bulu Kabupaten Sukoharjo, Menerangkan
+            bahwa:</p>
 
         <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin: 0px;">
             <tr>
@@ -137,7 +150,7 @@
             </tr>
             <tr>
                 <td style="text-align:left;">Keterangan Lain-Lain</td>
-                <td style="text-align:center;">:</td>
+                <td style="text-align:center; ">:</td>
                 <td>
                     <p class="atasbawah">{{ $keterangan_lain }}</p>
                 </td>
@@ -150,89 +163,95 @@
         <p>Nomor............................................................</p>
         <p>Tanggal..........................................................</p>
         <br>
-        
-    
+
+
     </div>
 
     <table style="width:100%;  table-layout:fixed; margin: 0px; ">
         <tr>
-           
+
             <td style="width:25%; text-align:center;">
-                <div class="tanda_tangan" id="ybs" >
+                <div class="tanda_tangan" id="ybs">
+                    <br>
                     <br>
                     <div class="kosong">Yang Bersangkutan</div>
                     <br>
                     <br>
                     <br>
                     <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
-                </div>   
-            </td>
-            <td style="width:50%; text-align:left;">
-                <!-- <div class="tanda_tangan" id="ybs" >
-                    <br>
-                    <div class="kosong">Yang Bersangkutan</div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
-                </div>    -->
-            </td>
-            <td style="width:30%; text-align:center;">
-                <div class="tanda_tangan" >
-                    <div >Kamal, {{ $tanggal }}</div>
-                    <div class="kosong" id="pejabat">KEPALA DESA KAMAL</div>
-                    <div id="nama_pejabat">
-                        <br>
-                        <br>
-                        <br>
-                        <span style="text-transform:uppercase;">{{ $kepala_desa }}</span>
-                    </div>
                 </div>
             </td>
-            
-        </tr>
-        
-        <tr >
-            <td style="width:25%; text-align:center;">
-                <!-- <div class="tanda_tangan" id="ybs" >
-                    <br>
-                    <div class="kosong">Yang Bersangkutan</div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
-                </div>    -->
+            <td style="width:50%; text-align:left;">
+              {{-- kosong --}}
             </td>
             
+            <td style="width:30%; text-align:center;">
+                <div class="tanda_tangan">
+                    <div>Kamal, {{ $tanggal }} </div>
+                    <div class="kosong" id="pejabat">
+
+                        @if($jabatan == 'kepala_desa' || $jabatan == 'KEPALA_DESA')
+                        <p style="margin: 0px;">Kepala Desa Kamal</p>
+
+                        @elseif($jabatan == 'sekdes' || $jabatan == 'SEKDES')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">Sekretaris Desa</p>
+
+                        @elseif($jabatan == 'kaur_tu' || $jabatan == 'KAUR_TU')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">KAUR TU</p>
+                        @endif
+                    </div>
+                    <div id="nama_pejabat">
+                        <br><br><br>
+                        <span style="text-transform:uppercase;">
+                            {{ $nama_pejabat }}
+                        </span>
+                    </div>
+
+                </div>
+            </td>
+
+
+
+        </tr>
+
+        <tr>
+            <td style="width:25%; text-align:center;">
+               {{-- kosong --}}
+            </td>
+
             <td style="width:50%; text-align:center;">
-                <div class="tanda_tangan" id="ybs" >
+                <div class="tanda_tangan" id="ybs">
                     <br>
-                    <div >Mengetahui,</div>
+                    <div>Mengetahui,</div>
                     <div class="kosong" id="pejabat">Camat Bulu</div>
                     <br>
                     <br>
                     <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">......................................</div>
-                </div>   
+                    <div id="nama_pemohon" style="text-transform:uppercase;">......................................
+                    </div>
+                </div>
             </td>
-            <td style="width:25%; text-align:center;">
-                <!-- <div class="tanda_tangan" >
+            {{-- <td style="width:25%; text-align:center;">
+               <div class="tanda_tangan" >
                     <div >Kamal, {{ $tanggal }}</div>
-                    <div style=" text-align:left;"  class="kosong" id="pejabat">Kepala Desa</div>
+                    <div style=" text-align:left;"  class="kosong" id="pejabat">Pejabat</div>
                     <div id="nama_pejabat">
                         <br>
                         <br>
                         <br>
-                        <span style="text-transform:uppercase;">{{ $kepala_desa }}</span>
+                        <span style="text-transform:uppercase;">{{ $nama_pejabat }}</span>
                     </div>
-                </div> -->
-            </td>
-            
-           
-            
+                </div> 
+            </td> --}}
+
+
+
         </tr>
     </table>
-     
-    
+
+
 </body>
+
 </html>

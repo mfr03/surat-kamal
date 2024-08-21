@@ -40,6 +40,10 @@ class UserResource extends Resource
                     ->revealable()
                     ->maxLength(255)
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('jabatan')
+                    ->label('jabatan')
+                    ->maxLength(255)
+                    ->columnSpanFull(),
             ]);
     }
 

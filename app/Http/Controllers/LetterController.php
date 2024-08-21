@@ -13,19 +13,13 @@ class LetterController extends Controller
 {
     public function downloadLetter($id)
     {
-        // Retrieve the record by ID
         $surat = Surat::findOrFail($id);
-    
-        
-    
-        // Determine the letter type based on the `jenis` field
         $template = '';
         $data = [];
     
         if ($surat->jenis_id == 1) {
             // Surat Pengantar
             $template = 'surat_pengantar';
-            // Convert the date_of_birth to a Carbon instance
             $dateOfBirth = Carbon::parse($surat->date_of_birth);
             $data = [
                 'nomor' => $surat->letter_number,
@@ -40,33 +34,52 @@ class LetterController extends Controller
                 'berlaku_mulai' => Carbon::parse($surat->valid_from)->translatedFormat('d F Y'),
                 'keterangan_lain' => $surat->remarks,
                 'tanggal' => now()->translatedFormat('d F Y'),
-                'sekdes' => 'SUWANDI',
                 'jenis_surat' => 'SKA',
                 'jalan_desa' => 'Alamat: Jl. Raya Bulu - Sanggang Km 2.5 No. Telp. -Kode Pos. 57563',
                 'desa' => 'Kamal',
                 'kecamatan' => 'Bulu',
                 'kabupaten' => 'Sukoharjo',
-                'kepala_desa' => 'Widodo',
+
+                'jabatan' => $surat->jabatan, 
+
+                'nama_pejabat' => $surat->jabatan == 'kepala_desa' ? 'Widodo' :
+                                    ($surat->jabatan == 'sekdes' ? 'Suwandi' :
+                                    ($surat->jabatan == 'kaur_tu' ? 'Subandi' : null)),
+
             ];
         } elseif ($surat->jenis_id == 2) {
             // Surat Keterangan Usaha
-            $template = 'surat_keterangan_usaha';
+            $template = 'sku';
+            $dateOfBirth = Carbon::parse($surat->date_of_birth);
             $data = [
                 'nomor' => $surat->letter_number,
                 'nama' => $surat->name,
                 'tempat_tinggal' => $surat->address,
                 'nik' => $surat->id_number,
-                'keperluan' => $surat->purpose,
-                'berlaku_mulai' => Carbon::parse($surat->valid_from)->translatedFormat('d F Y'),
-                'keterangan_lain' => $surat->remarks,
+                'jenis_kelamin' => $surat -> jenis_kelamin,
+                'ibu_kandung' => $surat->nama_ibu_kandung,
+                'agama' => $surat->religion,
+                'alasan' => $surat->remarks,
+                'nomor_hp' => $surat->nomor_hp,
+                'domisili' => $surat->domisili,
+                'selama' => $surat->selama,
                 'tanggal' => now()->translatedFormat('d F Y'),
-                'sekdes' => 'SUWANDI',
-                'jenis_surat' => 'SKA',
+
+                'jenis_surat' => 'SKU',
+
+               'jabatan' => $surat->jabatan, 
+
+                'kepala_desa' => $surat->jabatan == 'kepala_desa' ? 'Widodo' : null,
+                'sekdes' => $surat->jabatan == 'sekdes' ? 'Suwandi' : null,
+                'kaur_tu' => $surat->jabatan == 'kaur_tu' ? 'Subandi' : null,
+                'nama_pejabat' => $surat->jabatan == 'kepala_desa' ? 'Widodo' :
+                                    ($surat->jabatan == 'sekdes' ? 'Suwandi' :
+                                    ($surat->jabatan == 'kaur_tu' ? 'Subandi' : null)),
                 'jalan_desa' => 'Alamat: Jl. Raya Bulu - Sanggang Km 2.5 No. Telp. -Kode Pos. 57563',
                 'desa' => 'Kamal',
                 'kecamatan' => 'Bulu',
                 'kabupaten' => 'Sukoharjo',
-                'kepala_desa' => 'Widodo',
+                
             ];
         }
     
@@ -74,7 +87,7 @@ class LetterController extends Controller
         $uppercaseData = array_map('strtoupper', $data);
     
         // Load the appropriate PDF template
-        $pdf = PDF::loadView('testing', $uppercaseData);
+        $pdf = PDF::loadView($template, $uppercaseData);
     
         // Format the filename
         $formattedNomor = str_replace('/', '-', $data['nomor']);

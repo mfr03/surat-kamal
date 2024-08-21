@@ -38,13 +38,14 @@
         .atasbawah{
             margin: 0px;
         }
+        
     </style>
 </head>
 <body onload="window.print()">
     <div class="rangkasurat">
         <table class="headerAtas">
             <tr>
-                <td><img src="./sukoharjo.jpg" width="90px"></td>
+                <td><img src="./sukoharjo.jpg" width="80px"></td>
                 <td class="tengah">
                     <h2>PEMERINTAH KABUPATEN SUKOHARJO</h2>
                     <h2>KECAMATAN BULU</h2>
@@ -62,56 +63,54 @@
     </div>
 
     <div class="tengah">
-        <p>SURAT KETERANGAN PENGANTAR</p>
+        <p>SURAT KETERANGAN USAHA</p>
         <br>
         <p>Nomor: {{ $nomor }}</p>
     
     </div>
     <div class="content">
         
-        <p>Yang bertanda tangan dibawah ini kami Kepala Desa Kamal Kecamatan Bulu Kabupaten Sukoharjo, Menerangkan bahwa:</p>
+        <p>Yang bertanda tangan dibawah ini:</p>
 
         <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin: 0px;">
             <tr>
                 <td style="width:20%; text-align:left; ">Nama</td>
                 <td style="width:10%; text-align:center;">:</td>
                 <td style="width:60%;">
+                    <p class="atasbawah">{{ $nama_pejabat }}</p>
+                </td>
+            </tr>
+           
+           
+            <tr>
+                <td style="text-align:left;"> Jabatan</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                     @if($jabatan == 'kepala_desa' || $jabatan == 'KEPALA_DESA')
+                        <p class="atasbawah" style="text-transform:uppercase;">Kepala Desa Kamal</p>
+
+                        @elseif($jabatan == 'sekdes' || $jabatan == 'SEKDES')
+                        <p class="atasbawah" style="text-transform:uppercase;">Sekretaris Desa</p>
+
+                        @elseif($jabatan == 'kaur_tu' || $jabatan == 'KAUR_TU')
+                        <p class="atasbawah" style="text-transform:uppercase;">KAUR TU</p>
+                        @endif
+                </td>
+            </tr>
+            
+        </table>
+        
+                <p>
+                    Dengan ini menerangkan bahwa :
+                </p>
+            
+        <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin: 0px;">
+
+            <tr>
+                <td style="width: 20%; text-align:left; ">Nama</td>
+                <td style="width: 10%; text-align:center;">:</td>
+                <td style="width: 60%;">
                     <p class="atasbawah">{{ $nama }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:left; ">Tempat, tanggal lahir</td>
-                <td style="text-align:center;">:</td>
-                <td>
-                    <p class="atasbawah">{{ $tempat_tanggal_lahir }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:left;">Kewarganegaraan</td>
-                <td style="text-align:center;">:</td>
-                <td>
-                    <p class="atasbawah">tes</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:left;"> Agama</td>
-                <td style="text-align:center;">:</td>
-                <td>
-                    <p class="atasbawah">tes</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:left; ">Pekerjaan</td>
-                <td style="text-align:center;">:</td>
-                <td>
-                    <p class="atasbawah">tes</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:left;">Tempat Tinggal</td>
-                <td style="text-align:center;">:</td>
-                <td>
-                    <p class="atasbawah">tes</p>
                 </td>
             </tr>
             <tr>
@@ -122,49 +121,59 @@
                 </td>
             </tr>
             <tr>
-                <td style="text-align:left; ">Keperluan</td>
+                <td style="text-align:left; ">Jenis Kelamin</td>
                 <td style="text-align:center;">:</td>
                 <td>
-                    <p class="atasbawah">tes</p>
+                    <p class="atasbawah">{{ $jenis_kelamin }}</p>
                 </td>
             </tr>
             <tr>
-                <td style="text-align:left;">Berlaku Mulai</td>
+                <td style="text-align:left; ">Agama</td>
                 <td style="text-align:center;">:</td>
                 <td>
-                    <p class="atasbawah">{{ $berlaku_mulai }} s/d Selesai</p>
+                    <p class="atasbawah">{{ $agama }}</p>
                 </td>
             </tr>
             <tr>
-                <td style="text-align:left;">Keterangan Lain-Lain</td>
+                <td style="text-align:left; ">Nama Ibu Kandung</td>
                 <td style="text-align:center;">:</td>
                 <td>
-                    <p class="atasbawah">{{ $keterangan_lain }}</p>
+                    <p class="atasbawah">{{ $ibu_kandung }}</p>
                 </td>
             </tr>
+            <tr>
+                <td style="text-align:left; ">Nomor HP</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $nomor_hp }}</p>
+                </td>
+            </tr>
+            
+           
+            
         </table>
     </div>
 
-    <div class="tengah">
-        <p>Demikian untuk menjadikan maklum bagi yang berkepentingan</p>
-        <p>Nomor............................................................</p>
-        <p>Tanggal..........................................................</p>
+    <div class="left">
+        {{-- <p>Adalah benar penduduk yang berdomisili di {{ $domisili }} </p> --}}
+        <p style="text-transform:capitalize;"> {{ strtolower($domisili) }} </p>
+        {{-- <p>Berdasarkan sepengetahuan kami bahwa nama tersebut diatas adalah benar mempunyai usaha bertani selama &plusmn; {{ $selama }}</p> --}}
+        <p style="text-transform:capitalize"> {{ strtolower($selama) }}</p>
+        {{-- <p>Adapun surat keterangan ini dibuat untuk {{ $alasan }}</p> --}}
+        <p style="text-transform:capitalize;">{{ strtolower($alasan) }}</p>
+        <p>Demikian surat keterangan usaha ini dibuat untuk dapat dipergunakan sebagaimana mestinya dan bagi instansi yang berkepentingan menjadi bahan periksa adanya</p>
         <br>
-        
+
     
     </div>
+
 
     <table style="width:100%;  table-layout:fixed; margin: 0px; ">
         <tr>
            
             <td style="width:25%; text-align:center;">
                 <div class="tanda_tangan" id="ybs" >
-                    <br>
-                    <div class="kosong">Yang Bersangkutan</div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
+                    
                 </div>   
             </td>
             <td style="width:50%; text-align:left;">
@@ -174,63 +183,39 @@
                     <br>
                     <br>
                     <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
+                    <div id="nama_pemohon" style="text-transform:uppercase;"></div>
                 </div>    -->
             </td>
             <td style="width:30%; text-align:center;">
-                <div class="tanda_tangan" >
-                    <div >Kamal, {{ $tanggal }}</div>
-                    <div class="kosong" id="pejabat">KEPALA DESA KAMAL</div>
-                    <div id="nama_pejabat">
-                        <br>
-                        <br>
-                        <br>
-                        <span style="text-transform:uppercase;">{{ $kepala_desa }}</span>
+                <div class="tanda_tangan">
+                    <div>Kamal, {{ $tanggal }} </div>
+                    <div class="kosong" id="pejabat">
+
+                        @if($jabatan == 'kepala_desa' || $jabatan == 'KEPALA_DESA')
+                        <p style="margin: 0px;">Kepala Desa Kamal</p>
+
+                        @elseif($jabatan == 'sekdes' || $jabatan == 'SEKDES')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">Sekretaris Desa</p>
+
+                        @elseif($jabatan == 'kaur_tu' || $jabatan == 'KAUR_TU')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">KAUR TU</p>
+                        @endif
                     </div>
+                    <div id="nama_pejabat">
+                        <br><br><br>
+                        <span style="text-transform:uppercase;">
+                            {{ $nama_pejabat }}
+                        </span>
+                    </div>
+
                 </div>
             </td>
             
         </tr>
         
-        <tr >
-            <td style="width:25%; text-align:center;">
-                <!-- <div class="tanda_tangan" id="ybs" >
-                    <br>
-                    <div class="kosong">Yang Bersangkutan</div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">{{ $nama }}</div>
-                </div>    -->
-            </td>
-            
-            <td style="width:50%; text-align:center;">
-                <div class="tanda_tangan" id="ybs" >
-                    <br>
-                    <div >Mengetahui,</div>
-                    <div class="kosong" id="pejabat">Camat Bulu</div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="nama_pemohon" style="text-transform:uppercase;">......................................</div>
-                </div>   
-            </td>
-            <td style="width:25%; text-align:center;">
-                <!-- <div class="tanda_tangan" >
-                    <div >Kamal, {{ $tanggal }}</div>
-                    <div style=" text-align:left;"  class="kosong" id="pejabat">Kepala Desa</div>
-                    <div id="nama_pejabat">
-                        <br>
-                        <br>
-                        <br>
-                        <span style="text-transform:uppercase;">{{ $kepala_desa }}</span>
-                    </div>
-                </div> -->
-            </td>
-            
-           
-            
-        </tr>
+        
     </table>
      
     

@@ -21,16 +21,22 @@ class Surat extends Model
         'address',
         'id_number',
         'letter_number',
+        'nomor_surat',
         'purpose',
         'valid_from',
         'valid_until',
         'remarks',
         'jenis_id',
-        'kartu_keluarga', // new field
-        'nama_ibu_kandung', // new field
-        'nomor_hp', // new field
-        'keterangan_usaha', // new field
-        'kode_surat', // new field
+        'jenis_kelamin',
+        'kartu_keluarga', 
+        'nama_ibu_kandung', 
+        'nomor_hp', 
+        'kode_surat',
+        'jabatan',
+        'keterangan_usaha', 
+        'domisili',
+        'selama',
+        'tujuan_surat',
     ];
     
     
