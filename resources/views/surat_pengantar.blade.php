@@ -13,6 +13,11 @@
             font-size: 14px;
             background-color: #ffffff;
         }
+         @page {
+            size: 8.5in 11in; /* Letter size */
+            margin: 0.5in; /* Standard margin */
+        }
+
 
         /* .rangkasurat {
             width: 980px;
@@ -135,6 +140,13 @@
                 </td>
             </tr>
             <tr>
+                <td style="text-align:left; ">KK</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $kk }}</p>
+                </td>
+            </tr>
+            <tr>
                 <td style="text-align:left; ">Keperluan</td>
                 <td style="text-align:center;">:</td>
                 <td>
@@ -145,7 +157,7 @@
                 <td style="text-align:left;">Berlaku Mulai</td>
                 <td style="text-align:center;">:</td>
                 <td>
-                    <p class="atasbawah">{{ $berlaku_mulai }} s/d Selesai</p>
+                    <p class="atasbawah">{{ $berlaku_mulai }} s/d {{ $berlaku_sampai }}</p>
                 </td>
             </tr>
             <tr>

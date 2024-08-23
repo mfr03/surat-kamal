@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use PDF;
 use Carbon\Carbon;
 setlocale(LC_TIME, 'id_ID');
-\Carbon\Carbon::setLocale('id');
-\Carbon\Carbon::now()->formatLocalized("%A, %d %B %Y");
+Carbon::setLocale('id');
+Carbon::now()->isoFormat('dddd, D MMMM YYYY');
+
+
 
 class LetterController extends Controller
 {
@@ -29,9 +31,11 @@ class LetterController extends Controller
                 'agama' => $surat->religion,
                 'pekerjaan' => $surat->job,
                 'tempat_tinggal' => $surat->address,
+                'kk' => $surat->kartu_keluarga,
                 'nik' => $surat->id_number,
                 'keperluan' => $surat->purpose,
                 'berlaku_mulai' => Carbon::parse($surat->valid_from)->translatedFormat('d F Y'),
+                'berlaku_sampai' => Carbon::parse($surat->valid_from)->addMonth()->translatedFormat('d F Y'),
                 'keterangan_lain' => $surat->remarks,
                 'tanggal' => now()->translatedFormat('d F Y'),
                 'jenis_surat' => 'SKA',
@@ -83,17 +87,13 @@ class LetterController extends Controller
             ];
         }
     
-        // Convert data to uppercase
         $uppercaseData = array_map('strtoupper', $data);
     
-        // Load the appropriate PDF template
         $pdf = PDF::loadView($template, $uppercaseData);
     
-        // Format the filename
         $formattedNomor = str_replace('/', '-', $data['nomor']);
         $filename = preg_replace('/[\/\\\:\*\?"<>\|]/', '', $formattedNomor) . '.pdf';
     
-        // Return the PDF download
         return $pdf->download($filename);
     }
     

@@ -58,7 +58,7 @@ class SuratResource extends Resource
                     ->placeholder('Pilih opsi')
                     ->columnSpan(1)
                     ->options([
-                        '430' => '430 - Umum',
+                        '470' => '470 - Umum',
                         '300' => '300 - Bank',
                         '330' => '330 - Izin Acara',
                         '900' => '900 - Perbankan',
@@ -101,17 +101,13 @@ class SuratResource extends Resource
 
                         $year = now()->year;
 
-                        // Ensure fields are set before combining
                         if ($kode_surat && $letter_number) {
-                            // Combine the values
                             $combined_nomor_surat = $kode_surat . '/' . $letter_number . '/' . $roman_month . '/' . $year;
-
-                            // Set the combined value
                             $set('letter_number', $combined_nomor_surat);
                         }
                     })
 
-                    ->required(),  // Ensure this field is required
+                    ->required(),  
 
               
 
