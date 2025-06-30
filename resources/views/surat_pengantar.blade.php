@@ -111,13 +111,13 @@
                     <p class="atasbawah">{{ $kewarganegaraan }}</p>
                 </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td style="text-align:left;"> Agama</td>
                 <td style="text-align:center;">:</td>
                 <td>
                     <p class="atasbawah">{{ $agama }}</p>
                 </td>
-            </tr>
+            </tr> --}}
             <tr>
                 <td style="text-align:left; ">Pekerjaan</td>
                 <td style="text-align:center;">:</td>

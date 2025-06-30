@@ -5,365 +5,227 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Keterangan Kelahiran</title>
-    <style>
+    <title>Surat Keterangan</title>
+
+    <style type="text/css">
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 9px;
+            font-family: 'Times New Roman', Times, serif;
             background-color: #ffffff;
         }
 
-        @page {
-            size: 8.5in 11in;
-            margin: 1in;
-        }
+        /* .rangkasurat {
+            width: 980px;
+            margin: 0 auto;
+            background-color: #fff;
+            height: 500px;
+            padding: 20px;
+        } */
+        .headerAtas {
 
-        table {
+            border-bottom: 5px solid #000;
+            padding: 2px;
             width: 100%;
         }
 
-        .tabel-kiri,
-        .tabel-kiri td {
-            border: none;
-
+        .tengah {
+            text-align: center;
+            line-height: 5px;
+            padding-right: 100px;
         }
 
-        .tabel-kiri {
-            width: 100%;
+        .row {
+            margin-top: 20px
         }
 
-        .kiri-data {
-            width: 20%;
+        .lampiran {
+            margin-top: 20px;
         }
 
-        .titik-dua {
-            width: 2px;
-        }
-
-        .kanan-data {
-            width: 80%;
-            text-align: left;
-        }
-
-        .tabel-kanan {
-            border: none;
-        }
-
-        td,
-        th {
-            text-align: left;
-        }
-
-        .tabel-data {
-            border: 2px solid black;
-            border-bottom: 0px;
-        }
-
-        .end {
-            border-bottom: 2px solid black;
-        }
-
-        .header-table,
-        .header-table td {
-            border: none;
-        }
-
-        .section-title {
-            font-weight: bolder;
-            text-align: left;
-        }
-
-        .signature {
-            margin-top: 30px;
-            text-align: right;
+        .atasbawah {
+            margin: 0px;
         }
     </style>
 </head>
 
-<body onload="">
+<body onload="window.print()">
+    <div class="rangkasurat">
+        <table class="headerAtas">
+            <tr>
+                <td><img src="./sukoharjo.jpg" width="80px"></td>
+                <td class="tengah">
+                    <h2>PEMERINTAH KABUPATEN SUKOHARJO</h2>
+                    <h2>KECAMATAN BULU</h2>
+                    <h2>DESA KAMAL</h2>
+                    <p>Alamat: Jl. Raya Bulu - Sanggang Km 2.5 No. Telp, Kode Pos 57563</p>
+                    <p></p>
+                </td>
+            </tr>
+        </table>
+        <div id="lampiran" class="lampiran">
+            No Kode Desa/Kelurahan<br />
+            33 11 022002
+        </div>
+        <br>
+    </div>
+
+    <div class="tengah">
+        <p>SURAT KETERANGAN USAHA</p>
+        <br>
+        <p>Nomor: {{ $nomor }}</p>
+
+    </div>
+    <div class="content">
+
+        <p>Yang bertanda tangan dibawah ini:</p>
+
+        <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin: 0px;">
+            <tr>
+                <td style="width:20%; text-align:left; ">Nama</td>
+                <td style="width:10%; text-align:center;">:</td>
+                <td style="width:60%;">
+                    <p class="atasbawah">{{ $nama_pejabat }}</p>
+                </td>
+            </tr>
 
 
-    <div>
-        <table class="">
             <tr>
-                <td>Pemerintah Desa/Kelurahan :</td>
-                <td> lembar </td>
-                <td>Kecamatan :</td>
-                <td></td>
+                <td style="text-align:left;"> Jabatan</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    @if($jabatan == 'kepala_desa' || $jabatan == 'KEPALA_DESA')
+                    <p class="atasbawah" style="text-transform:uppercase;">Kepala Desa Kamal</p>
 
-            </tr>
-            <tr>
-                <td>Kabupaten/Kota:</td>
-                <td></td>
-                <td>Kode Wilayah:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Pemerintah Desa/Kelurahan:</td>
-                <td> </td>
-                <td>Kecamatan:</td>
-                <td></td>
+                    @elseif($jabatan == 'sekdes' || $jabatan == 'SEKDES')
+                    <p class="atasbawah" style="text-transform:uppercase;">Sekretaris Desa</p>
 
+                    @elseif($jabatan == 'kaur_tu' || $jabatan == 'KAUR_TU')
+                    <p class="atasbawah" style="text-transform:uppercase;">KAUR TU</p>
+                    @endif
+                </td>
+            </tr>
+
+        </table>
+
+        <p>
+            Dengan ini menerangkan bahwa :
+        </p>
+
+        <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin: 0px;">
+
+            <tr>
+                <td style="width: 20%; text-align:left; ">Nama</td>
+                <td style="width: 10%; text-align:center;">:</td>
+                <td style="width: 60%;">
+                    <p class="atasbawah">{{ $nama }}</p>
+                </td>
             </tr>
             <tr>
-                <td>Kabupaten/Kota:</td>
-                <td></td>
-                <td>Kode Wilayah:</td>
-                <td></td>
+                <td style="text-align:left; ">NIK</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $nik }}</p>
+                </td>
             </tr>
             <tr>
-                <td style="text-align: right;">Kode: F-2.01</td>
+                <td style="text-align:left; ">Jenis Kelamin</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $jenis_kelamin }}</p>
+                </td>
             </tr>
+            <tr>
+                <td style="text-align:left; ">Agama</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $agama }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:left; ">Nama Ibu Kandung</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $ibu_kandung }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:left; ">Nomor HP</td>
+                <td style="text-align:center;">:</td>
+                <td>
+                    <p class="atasbawah">{{ $nomor_hp }}</p>
+                </td>
+            </tr>
+
+
+
         </table>
     </div>
 
-    <h2 style="text-align: center;">SURAT KETERANGAN KELAHIRAN</h2>
+    <div class="left">
+        {{-- <p>Adalah benar penduduk yang berdomisili di {{ $domisili }} </p> --}}
+        <p style="text-transform:capitalize;"> {{ strtolower($domisili) }} </p>
+        {{-- <p>Berdasarkan sepengetahuan kami bahwa nama tersebut diatas adalah benar mempunyai usaha bertani selama
+            &plusmn; {{ $selama }}</p> --}}
+        <p style="text-transform:capitalize"> {{ strtolower($selama) }}</p>
+        {{-- <p>Adapun surat keterangan ini dibuat untuk {{ $alasan }}</p> --}}
+        <p style="text-transform:capitalize;">{{ strtolower($alasan) }}</p>
+        <p>Demikian surat keterangan usaha ini dibuat untuk dapat dipergunakan sebagaimana mestinya dan bagi instansi
+            yang berkepentingan menjadi bahan periksa adanya</p>
+        <br>
 
 
-
-    <table class="">
-        <tr>
-            <td class="kiri-data">Nama Kepala Keluarga</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">GILANG ARYO</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">Nama Kepala Keluarga</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">GILANG ARYO</td>
-        </tr>
-
-    </table>
-
-    <!-- Table for BAYI / ANAK -->
-    <table class="tabel-data">
-        <tr>
-            <th colspan="3" class="section-title">BAYI / ANAK</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. Nama</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">GILANG ARYO PAMUNGKAS</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Jenis Kelamin</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Laki-laki</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Tempat dilahirkan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">RS/RB</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Tempat kelahiran</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Surakarta</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Hari dan Tanggal Lahir</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Senin, 10 Januari 2022</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">6. Pukul</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">10:30 WIB</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">7. Jenis Kelahiran</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Tunggal</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">8. Penolong Kelahiran</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Dokter</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">9. Berat Bayi</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3.2 Kg</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">10. Panjang Bayi</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">50 cm</td>
-        </tr>
-    </table>
-
-    <!-- Table for AYAH -->
-    <table class="tabel-data">
-        <tr>
-            <th colspan="3" class="section-title">AYAH</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. NIK</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3301234567890001</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Nama Lengkap</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">BUDI SANTOSO</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Tanggal Lahir / Umur</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">5 Januari 1985 / 37 Tahun</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Pekerjaan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">PNS</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Alamat</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Jl. Merdeka No. 123, Surakarta</td>
-        </tr>
-    </table>
-
-    <!-- Table for IBU -->
-    <table class="tabel-data">
-        <tr>
-            <th colspan="3" class="section-title">IBU</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. NIK</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3301234567890002</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Nama Lengkap</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">SRI RAHAYU</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Tanggal Lahir / Umur</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">12 April 1987 / 35 Tahun</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Pekerjaan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Ibu Rumah Tangga</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Alamat</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Jl. Merdeka No. 123, Surakarta</td>
-        </tr>
-    </table>
-
-    <!-- Table for PELAPOR -->
-    <table class="tabel-data">
-        <tr>
-            <th colspan="3" class="section-title">PELAPOR</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. NIK</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3301234567890003</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Nama Lengkap</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">ANDI WIJAYA</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Umur</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">40 Tahun</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Jenis Kelamin</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Laki-laki</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Pekerjaan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Wiraswasta</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">6. Alamat</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Jl. Diponegoro No. 456, Surakarta</td>
-        </tr>
-    </table>
-
-    <!-- Table for SAKSI I -->
-    <table class="tabel-data">
-        <tr>
-            <th colspan="3" class="section-title">SAKSI I</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. NIK</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3301234567890004</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Nama Lengkap</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">SUPARDI</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Umur</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">50 Tahun</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Pekerjaan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Petani</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Alamat</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Jl. Kenanga No. 789, Surakarta</td>
-        </tr>
-    </table>
-
-    <!-- Table for SAKSI II -->
-    <table class="tabel-data end">
-        <tr>
-            <th colspan="3" class="section-title">SAKSI II</th>
-        </tr>
-        <tr>
-            <td class="kiri-data">1. NIK</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">3301234567890005</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">2. Nama Lengkap</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">SUDARSONO</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">3. Umur</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">45 Tahun</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">4. Pekerjaan</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Buruh</td>
-        </tr>
-        <tr>
-            <td class="kiri-data">5. Alamat</td>
-            <td class="titik-dua">:</td>
-            <td class="kanan-data">Jl. Flamboyan No. 321, Surakarta</td>
-        </tr>
-    </table>
-
-
-    <div class="signature">
-        Mengetahui:<br>
-        Kepala Desa/Lurah<br><br>
-        <br><br>
-        <span>______________________</span>
     </div>
+
+
+    <table style="width:100%;  table-layout:fixed; margin: 0px; ">
+        <tr>
+
+            <td style="width:25%; text-align:center;">
+                <div class="tanda_tangan" id="ybs">
+
+                </div>
+            </td>
+            <td style="width:50%; text-align:left;">
+                <!-- <div class="tanda_tangan" id="ybs" >
+                    <br>
+                    <div class="kosong">Yang Bersangkutan</div>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="nama_pemohon" style="text-transform:uppercase;"></div>
+                </div>    -->
+            </td>
+            <td style="width:30%; text-align:center;">
+                <div class="tanda_tangan">
+                    <div>Kamal, {{ $tanggal }} </div>
+                    <div class="kosong" id="pejabat">
+
+                        @if($jabatan == 'kepala_desa' || $jabatan == 'KEPALA_DESA')
+                        <p style="margin: 0px;">Kepala Desa Kamal</p>
+
+                        @elseif($jabatan == 'sekdes' || $jabatan == 'SEKDES')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">Sekretaris Desa</p>
+
+                        @elseif($jabatan == 'kaur_tu' || $jabatan == 'KAUR_TU')
+                        <p style="margin: 0px;">a/n Kepala Desa Kamal</p>
+                        <p style="margin: 0px;">KAUR TU</p>
+                        @endif
+                    </div>
+                    <div id="nama_pejabat">
+                        <br><br><br>
+                        <span style="text-transform:uppercase;">
+                            {{ $nama_pejabat }}
+                        </span>
+                    </div>
+
+                </div>
+            </td>
+
+        </tr>
+
+
+    </table>
+
 
 </body>
 

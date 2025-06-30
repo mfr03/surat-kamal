@@ -1,3 +1,4 @@
+<!-- resources/views/surat-kelahiran.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,329 +8,84 @@
     <title>Surat Keterangan Kelahiran</title>
     <style>
         body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9px;
             background-color: #ffffff;
         }
 
         @page {
             size: 8.5in 11in;
-            /* Letter size */
-            margin: 0.5in;
-            /* Standard margin */
+            margin: 1in;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td,
-        th {
+        .letter-box {
+            width: 20px;
+            height: 20px;
             border: 1px solid black;
-            padding: 2px;
-            text-align: left;
-        }
-
-        .header-table,
-        .header-table td {
-            border: none;
-        }
-
-        .section-title {
-            font-weight: bold;
             text-align: center;
+            line-height: 20px;
+            display: inline-block;
         }
 
-        .signature {
-            margin-top: 30px;
-            text-align: right;
+        .letter-container {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        .tabel-data {
+            border: 2px solid black;
+            border-bottom: 0px;
+            border-collapse: collapse;
         }
     </style>
 </head>
 
-<body onload="window.print()">
+<body>
 
     <h2 style="text-align: center;">SURAT KETERANGAN KELAHIRAN</h2>
 
-    <table class="header-table">
+    <table class="tabel-data">
         <tr>
-            <td>Pemerintah Desa/Kelurahan:</td>
-            <td>___________________</td>
-            <td>Kecamatan:</td>
-            <td>___________________</td>
+            <th colspan="3">BAYI / ANAK</th>
         </tr>
         <tr>
-            <td>Kabupaten/Kota:</td>
-            <td>___________________</td>
-            <td>Kode Wilayah:</td>
-            <td>___________________</td>
-        </tr>
-        <tr>
-            <td colspan="4" style="text-align: right;">Kode: F-2.01</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">BAYI / ANAK</th>
-        </tr>
-        <tr>
-            <td>Nama Kepala Keluarga:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>Nomor Kartu Keluarga:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>1. Nama:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Jenis Kelamin:</td>
-            <td><input type="checkbox"> Laki-laki</td>
-            <td><input type="checkbox"> Perempuan</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>3. Tempat Dilahirkan:</td>
-            <td><input type="checkbox"> RS/RB</td>
-            <td><input type="checkbox"> Puskesmas</td>
-            <td><input type="checkbox"> Polindes</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="checkbox"> Rumah</td>
-            <td><input type="checkbox"> Lainnya</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>4. Hari dan Tanggal Lahir:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>5. Pukul:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>6. Jenis Kelahiran:</td>
-            <td><input type="checkbox"> Tunggal</td>
-            <td><input type="checkbox"> Kembar 2</td>
-            <td><input type="checkbox"> Kembar 3</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="checkbox"> Kembar 4</td>
-            <td><input type="checkbox"> Lainnya</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>7. Penolong Kelahiran:</td>
-            <td><input type="checkbox"> Dokter</td>
-            <td><input type="checkbox"> Bidan/Perawat</td>
-            <td><input type="checkbox"> Dukun</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="checkbox"> Lainnya</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>8. Berat Bayi:</td>
-            <td>_________________ Gram</td>
-            <td>9. Panjang Bayi:</td>
-            <td>_________________ Cm</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">IBU</th>
-        </tr>
-        <tr>
-            <td>1. NIK:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Nama Lengkap:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>3. Tanggal Lahir / Umur:</td>
-            <td>_________________ / _________________ Tahun</td>
-            <td>4. Pekerjaan:</td>
-            <td>____________________________________</td>
-        </tr>
-        <tr>
-            <td>5. Alamat:</td>
-            <td colspan="3">
-                a. Desa/Kelurahan: ___________________________<br>
-                b. Kecamatan: ___________________________<br>
-                c. Kab/Kota: ___________________________<br>
-                d. Provinsi: ___________________________
+            <td>Nama</td>
+            <td>:</td>
+            <td>
+                <div class="letter-container">
+                    @foreach (str_split($data->nama) as $char)
+                    <div class="letter-box">{{ $char }}</div>
+                    @endforeach
+                </div>
             </td>
         </tr>
         <tr>
-            <td>6. Kewarganegaraan:</td>
-            <td><input type="checkbox"> WNI</td>
-            <td><input type="checkbox"> WNA</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>7. Tgl Pencatatan Perkawinan:</td>
-            <td colspan="3">____________________________________</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">AYAH</th>
-        </tr>
-        <tr>
-            <td>1. NIK:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Nama Lengkap:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>3. Tanggal Lahir / Umur:</td>
-            <td>_________________ / _________________ Tahun</td>
-            <td>4. Pekerjaan:</td>
-            <td>____________________________________</td>
-        </tr>
-        <tr>
-            <td>5. Alamat:</td>
-            <td colspan="3">
-                a. Desa/Kelurahan: ___________________________<br>
-                b. Kecamatan: ___________________________<br>
-                c. Kab/Kota: ___________________________<br>
-                d. Provinsi: ___________________________
+            <td>NIK</td>
+            <td>:</td>
+            <td>
+                <div class="letter-container">
+                    @foreach (str_split($data->nik) as $char)
+                    <div class="letter-box">{{ $char }}</div>
+                    @endforeach
+                </div>
             </td>
         </tr>
         <tr>
-            <td>6. Kewarganegaraan:</td>
-            <td><input type="checkbox"> WNI</td>
-            <td><input type="checkbox"> WNA</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>7. Tgl Pencatatan Perkawinan:</td>
-            <td colspan="3">____________________________________</td>
-        </tr>
-    </table>
+            <td>Tanggal Lahir</td>
+            <td>:</td>
+            <td>
+                <div class="letter-container">
+                    @foreach (str_split(\Carbon\Carbon::parse($data->tanggal_lahir)->format('d-m-Y')) as $char)
+                    <div class="letter-box">{{ $char }}</div>
+                    @endforeach
 
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">PELAPOR</th>
-        </tr>
-        <tr>
-            <td>1. NIK:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Nama Lengkap:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>3. Umur:</td>
-            <td>_________________ Tahun</td>
-            <td>4. Jenis Kelamin:</td>
-            <td><input type="checkbox"> Laki-laki</td>
-            <td><input type="checkbox"> Perempuan</td>
-        </tr>
-        <tr>
-            <td>5. Pekerjaan:</td>
-            <td colspan="3">____________________________________</td>
-        </tr>
-        <tr>
-            <td>6. Alamat:</td>
-            <td colspan="3">
-                a. Desa/Kelurahan: ___________________________<br>
-                b. Kecamatan: ___________________________<br>
-                c. Kab/Kota: ___________________________<br>
-                d. Provinsi: ___________________________
+                </div>
             </td>
         </tr>
+
     </table>
 
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">SAKSI I</th>
-        </tr>
-        <tr>
-            <td>1. NIK:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Nama Lengkap:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>3. Umur:</td>
-            <td>_________________ Tahun</td>
-            <td>4. Jenis Kelamin:</td>
-            <td><input type="checkbox"> Laki-laki</td>
-            <td><input type="checkbox"> Perempuan</td>
-        </tr>
-        <tr>
-            <td>5. Pekerjaan:</td>
-            <td colspan="3">____________________________________</td>
-        </tr>
-        <tr>
-            <td>6. Alamat:</td>
-            <td colspan="3">
-                a. Desa/Kelurahan: ___________________________<br>
-                b. Kecamatan: ___________________________<br>
-                c. Kab/Kota: ___________________________<br>
-                d. Provinsi: ___________________________
-            </td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="4" class="section-title">SAKSI II</th>
-        </tr>
-        <tr>
-            <td>1. NIK:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>2. Nama Lengkap:</td>
-            <td colspan="3">___________________________________________</td>
-        </tr>
-        <tr>
-            <td>3. Umur:</td>
-            <td>_________________ Tahun</td>
-            <td>4. Jenis Kelamin:</td>
-            <td><input type="checkbox"> Laki-laki</td>
-            <td><input type="checkbox"> Perempuan</td>
-        </tr>
-        <tr>
-            <td>5. Pekerjaan:</td>
-            <td colspan="3">____________________________________</td>
-        </tr>
-        <tr>
-            <td>6. Alamat:</td>
-            <td colspan="3">
-                a. Desa/Kelurahan: ___________________________<br>
-                b. Kecamatan: ___________________________<br>
-                c. Kab/Kota: ___________________________<br>
-                d. Provinsi: ___________________________
-            </td>
-        </tr>
-    </table>
-
-    <div class="signature">
-        Mengetahui:<br>
-        Kepala Desa/Lurah<br><br>
-        <br><br>
-        <span>______________________</span>
-    </div>
+    <!-- More fields like Jenis Kelamin, Tempat Lahir, etc., here -->
 
 </body>
 

@@ -31,8 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#6366f1',
             ])
-            ->brandLogo(asset('logo-skh.png'))
-            ->brandName('Admin Desa Kamal')
+            // ->brandLogo(asset('logo-skh.png'))
+            ->brandName('Sistem Surat Desa Kamal')
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

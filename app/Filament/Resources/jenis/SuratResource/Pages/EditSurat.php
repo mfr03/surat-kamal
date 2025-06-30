@@ -59,9 +59,7 @@ class EditSurat extends EditRecord
             ]);
         }
 
-        // Fill the form with the prepared data
-        $datanya = $this->form->fill($data);
-         echo json_encode($datanya);
+      
     }
 
     protected function getHeaderActions(): array

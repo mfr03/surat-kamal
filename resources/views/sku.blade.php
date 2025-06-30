@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">s
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Keterangan</title>
@@ -156,11 +156,11 @@
 
     <div class="left">
         {{-- <p>Adalah benar penduduk yang berdomisili di {{ $domisili }} </p> --}}
-        <p style="text-transform:capitalize;"> {{ strtolower($domisili) }} </p>
+        <p style="text-transform:inherit;"> {{ ($domisili) }} </p>
         {{-- <p>Berdasarkan sepengetahuan kami bahwa nama tersebut diatas adalah benar mempunyai usaha bertani selama &plusmn; {{ $selama }}</p> --}}
-        <p style="text-transform:capitalize"> {{ strtolower($selama) }}</p>
+        <p style="text-transform:initial"> {{ ($selama) }}</p>
         {{-- <p>Adapun surat keterangan ini dibuat untuk {{ $alasan }}</p> --}}
-        <p style="text-transform:capitalize;">{{ strtolower($alasan) }}</p>
+        <p style="text-transform:lowercase;">{{ strtolower($alasan) }}</p>
         <p>Demikian surat keterangan usaha ini dibuat untuk dapat dipergunakan sebagaimana mestinya dan bagi instansi yang berkepentingan menjadi bahan periksa adanya</p>
         <br>
 

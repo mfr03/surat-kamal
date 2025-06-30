@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SuratResource\Pages;
-use App\Filament\Resources\SuratResource\RelationManagers;
-use App\Models\Surat;
+use App\Filament\Resources\SuratPengantarResource\Pages;
+use App\Filament\Resources\SuratPengantarResource\RelationManagers;
+use App\Models\surat_pengantar;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Get;
 use Filament\Forms\Components\Select;
@@ -23,35 +23,38 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components;
 
-
-class SuratResource extends Resource
+class SuratPengantarResource extends Resource
 {
-    protected static ?string $model = Surat::class;
+    protected static ?string $model = surat_pengantar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-airplane';
-    
+    protected static ?string $navigationGroup = 'Surat-surat';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getPluralLabel(): string
     {
-        return 'Surat';  
+        return 'Surat Pengantar';  
     }
 
     public static function getLabel(): string
     {
-        return 'Surat'; 
+        return 'Surat Pengantar'; 
     }
+
+     public static function slug(): string
+    {
+        return 'surat-pengantar'; 
+    }
+    
+
+    
+
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-        
-                Select::make('jenis_id')
-                    ->relationship('jenis', 'name')
-                    ->label('Jenis Surat')
-                    ->placeholder('Pilih opsi')
-                    ->required()
-                    ->columnSpanFull()
-                    ->live(),
                     
                 Select::make('kode_surat')
                     ->label('Kode Surat')
@@ -64,24 +67,23 @@ class SuratResource extends Resource
                         '900' => '900 - Perbankan',
                     ])
                     ->required()
-                    ->reactive(), // This ensures changes to this field trigger reactive updates
+                    ->reactive(),
 
                 TextInput::make('nomor_surat')
                     ->label('Nomor')
                     ->maxLength(255)
                     ->columnSpan(1)
                     ->required()
-                    ->reactive(), // This ensures changes to this field trigger reactive updates
+                    ->reactive(), 
 
                 TextInput::make('letter_number')
                     ->label('Nomor Surat')
                     ->columnSpanFull()
-                    ->reactive()  // Make it reactive to changes
+                    ->reactive()  
                     ->afterStateUpdated(function ($state, callable $set, Get $get) {
                         $kode_surat = $get('kode_surat');
                         $letter_number = $get('nomor_surat');
                         
-                        // Convert month to Roman numerals
                         $month = now()->month;
                         $roman_month = match ($month) {
                             1 => 'I',
@@ -106,24 +108,8 @@ class SuratResource extends Resource
                             $set('letter_number', $combined_nomor_surat);
                         }
                     })
-
+                    ->hint('Nomor surat terakhir: ' . surat_pengantar::latest('created_at')->value('letter_number'))
                     ->required(),  
-
-              
-
-                // Select::make('nama_perangkat')
-                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                //     ->label('Nama perangkat')
-                //     ->placeholder('Pilih opsi')
-                //     ->columnSpanFull()
-                //     ->options([
-                //         'kepala_desa' => 'Kepala Desa',
-                //         'sekdes' => 'Sekretaris Desa',
-                //         'kaur_tu' => 'KAUR TU',
-                //     ])
-                //     ->required()
-                //     ->reactive(), // This ensures changes to this field trigger reactive updates
-
 
                 TextInput::make('name')
                     ->required()
@@ -134,21 +120,20 @@ class SuratResource extends Resource
                 
                     
                 TextInput::make('place_of_birth')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
                     ->label('Tempat lahir')
                     ->maxLength(255)
                     ->columnSpanFull(),   
 
                 DatePicker::make('date_of_birth')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
                     ->label('Tanggal lahir')
+                    ->native(false)
+                    ->displayFormat('d F Y')
                     ->maxDate(now())
                     ->columnSpanFull(),
 
                 Select::make('nationality')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->label('Kewarganearaan')
                     ->options([
                         'indonesia' => 'Indonesia',
@@ -157,89 +142,28 @@ class SuratResource extends Resource
                     ->required()
                     ->columnSpanFull(),
 
+                 
+                TextInput::make('job')
+                    ->required()
+                    ->label('Pekerjaan')
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                
+
+                TextInput::make('address')
+                    ->required()
+                    ->label('Tempat Tinggal')
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+
+               
                 TextInput::make('id_number')
                     ->required()
                     ->label('NIK')
                     ->maxLength(255)
                     ->columnSpanFull(),
 
-                Select::make('jenis_kelamin')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->label('Jenis kelamin')
-                    ->placeholder('Pilih opsi')
-                    ->columnSpanFull()
-                    ->options([
-                        'Laki-laki' => 'Laki-laki',
-                        'Perempuan' => 'Perempuan',
-                        
-                        ])
-                    ->required(),
-
-                Select::make('religion')
-                    ->placeholder('Pilih opsi')
-                    ->label('Agama')
-                    ->options([
-                        'islam' => 'Islam',
-                        'kristen' => 'Kristen',
-                        'hindu' => 'Hindu',
-                        'budha' => 'Budha',
-                        'konghucu' => 'Konghucu',
-                        ])
-                        ->required()
-                        ->columnSpanFull(),
-
-                    
-                TextInput::make('nama_ibu_kandung')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->columnSpanFull(),
-
-                TextInput::make('nomor_hp')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->columnSpanFull(),
-
-                TextInput::make('domisili')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->default('Adalah benar penduduk yang berdomisili di ............')
-                    ->columnSpanFull(),
-
-                TextInput::make('selama')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->default('Berdasarkan sepengetahuan kami bahwa nama tersebut diatas adalah benar mempunya usaha bertani selama ... Tahun')
-                    ->columnSpanFull(),
-
-                // TextInput::make('tujuan_susrat')
-                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                //     ->columnSpanFull(),
-
-                Textarea::make('tujuan_surat')
-                    ->label('Tujuan Surat')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '2')
-                    ->reactive()
-                    ->maxLength(65535)
-                    ->columnSpanFull()
-                    ->default('Adapun surat keterangan usaha ini dibuat untuk'),
-                    
-                
-
-                
-                TextInput::make('job')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                    ->required()
-                    ->label('Pekerjaan')
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-
-                TextInput::make('address')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                    ->required()
-                    ->label('Tempat Tinggal')
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-
-                
-
                 TextInput::make('kartu_keluarga')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1' )
                     ->required()
                     ->label('Kartu Keluarga')
                     ->maxLength(255)
@@ -247,14 +171,12 @@ class SuratResource extends Resource
 
 
                 TextInput::make('purpose')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
                     ->label('Keperluan')
                     ->maxLength(255)
                     ->columnSpanFull(),
 
                 TextInput::make('Tujuan')
-                ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
                     ->label('Tujuan')
                     ->maxLength(255)
@@ -262,24 +184,14 @@ class SuratResource extends Resource
 
                 DatePicker::make('valid_from')
                     ->label('Berlaku mulai')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->required()
+                    ->native(false)
+                    ->displayFormat('d F Y')
                     ->maxDate(now())
                     ->columnSpanFull(),
 
-                // DatePicker::make('valid_until')
-                // ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                //     ->required()
-                //     ->columnSpanFull(),
-                    
-                // Textarea::make('remarks')
-                //     ->label('Keterangan lain-lain')
-                //     ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
-                //     ->maxLength(65535)
-                //     ->columnSpanFull(),
 
                 Select::make('template_remarks')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->label('Pilih Keterangan')
                     ->placeholder('Pilih opsi')
                     ->options([
@@ -300,7 +212,6 @@ class SuratResource extends Resource
 
                 Textarea::make('remarks')
                     ->label('Keterangan lain-lain')
-                    ->visible(fn (Get $get): bool => $get('jenis_id') === '1')
                     ->visible(fn (Get $get) => $get('remarks') )  
                     ->reactive()
                     ->maxLength(65535)
@@ -339,17 +250,34 @@ class SuratResource extends Resource
                     TextColumn::make('created_at')
                         ->sortable()
                         ->label('Tanggal Dibuat')
-                        ->searchable(),
-                    TextColumn::make('jenis.name')
-                        ->sortable()
-                        ->label('Jenis Surat')
-                        ->searchable(),
+                        ->searchable()
+                        ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)
+                            ->locale('id') // Set locale to Indonesian
+                            ->translatedFormat('d F Y')),
                 ])
                 ->defaultSort('created_at', 'desc')
                 ->filters([
-                    Tables\Filters\SelectFilter::make('jenis_id')
-                        ->relationship('jenis', 'name'),
+                  
                 ])
+
+                ->headerActions([
+                    Action::make('Export to Excel by Month')
+                        ->label('Ekspor Excel')
+                        ->form([
+                            Forms\Components\DatePicker::make('month')
+                                ->label('Pilih Bulan')
+                                ->format('Y-m') // Formatting it to Year-Month
+                                ->displayFormat('F Y') // Display format as 'Month Year'
+                                ->required()
+                                ->native(false)
+                                ->closeOnDateSelection(),
+                        ])
+                        ->action(function (array $data) {
+                            return redirect()->route('export.suratPengantarByMonth', ['month' => $data['month']]);
+                        })
+                        ->icon('heroicon-o-arrow-down-tray'),
+                ])
+
                 ->actions([
                     
                     // View PDF action
@@ -360,14 +288,13 @@ class SuratResource extends Resource
                     //     ->icon('heroicon-o-eye')
                     //     ->openUrlInNewTab(),
                     
+                    Tables\Actions\EditAction::make(),
+
                     // Download PDF action
                     Action::make('downloadPDF')
                     ->label('Download PDF')
-                    ->url(fn (Surat $record) => route('download.letter', ['id' => $record->id]))
+                    ->url(fn (surat_pengantar $record) => route('download.pengantar', ['id' => $record->id]))
                     ->icon('heroicon-o-arrow-down-tray'),
-                    
-                   
-                    Tables\Actions\EditAction::make(),
                     
                     Tables\Actions\DeleteAction::make(),
                     ])
@@ -388,9 +315,9 @@ class SuratResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSurats::route('/'),
-            'create' => Pages\CreateSurat::route('/create'),
-            'edit' => Pages\EditSurat::route('/{record}/edit'),
+            'index' => Pages\ListSuratPengantars::route('/'),
+            'create' => Pages\CreateSuratPengantar::route('/create'),
+            'edit' => Pages\EditSuratPengantar::route('/{record}/edit'),
         ];
     }
 }
